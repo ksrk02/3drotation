@@ -1,5 +1,5 @@
 import * as THREE from 'three'
-import * as io from 'socket.io'
+import { io } from 'socket.io-client';
 import calcMagOffset from './spherefit'
 
 
@@ -16,13 +16,13 @@ let magDatas = [];
 const deltaT = 0.01;
 const maxLen = 200;
 
-let socket = io.connect('http://localhost:3000');
+const socket = io('http://localhost:3000');
 
-socket.on("connect", function() {
-    console.log("Connected to server");
+socket.on('connect', function() {
+    console.log('Connected to server');
 });
 
-socket.on("StoC", function(data) {
+socket.on('StoC', function(data) {
     let datas = data.split(',');
 
     accX = parseFloat(datas[0]);
@@ -42,8 +42,7 @@ socket.on("StoC", function(data) {
 });
 
 
-
-window.addEventListener("load", function() {
+window.addEventListener('load', function() {
     init();
     animate();
 });
@@ -52,6 +51,7 @@ window.addEventListener("load", function() {
 let scene;
 let camera
 let renderer;
+let cube;
 
 function init() {
 
@@ -67,8 +67,9 @@ function init() {
 
     document.body.appendChild(renderer.domElement);
 
-    const geometry = new THREE.BoxGeometry(300, 300, 300);
+    const geometry = new THREE.BoxGeometry(100, 100, 100);
     const material = new THREE.MeshNormalMaterial();
+
     cube = new THREE.Mesh(geometry, material);
     cube.position.set(0, 0, 0);
     scene.add(cube);

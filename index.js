@@ -1,12 +1,16 @@
-const express = require("express");
+const express = require('express');
 const app = express();
-const socketIO = require("socket.io");
+const server = require('http').Server(app);
+const io = require('socket.io')(server);
 const SerialPort = require('serialport');
 const port = 3000;
-const portName = 'COM7';
+const portName = 'COM3';
 
 app.use(express.static('public'));
-app.listen(port)
+
+server.listen(port, function() {
+    console.log('Port:', port, 'Connected');
+});
 
 
 const serialport = new SerialPort(portName, {
@@ -14,17 +18,17 @@ const serialport = new SerialPort(portName, {
     dataBits: 8,
 });
 
-const server = createServer(app);
-const io = socketIO.listen(server);
-io.sockets.on("connection", function(socket) {
-    socket.on("disconnect", function() {
-        console.log("Disconnected");
-    });
-});
-
 const Readline = SerialPort.parsers.Readline;
 const parser = new Readline();
 serialport.pipe(parser);
+
 parser.on('data', function(data) {
-    io.sockets.emit("StoC", data);
+    io.emit("StoC", data);
+    //console.log(data);
+});
+
+io.on('connection', function(socket) {
+    socket.on('disconnect', function() {
+        console.log('Disconnected');
+    });
 });

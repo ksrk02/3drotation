@@ -1,6 +1,6 @@
 {
     "name": "3drotation",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "description": "3drotation",
     "main": "index.js",
     "scripts": {
@@ -25,6 +25,7 @@
     },
     "dependencies": {
         "express": "^4.17.1",
+        "serialport": "^9.0.7",
         "socket.io": "^4.0.1",
         "socket.io-client": "^4.0.1",
         "three": "^0.127.0"
