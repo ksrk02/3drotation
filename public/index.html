@@ -4,15 +4,36 @@
 <head>
     <meta charset='utf-8' />
     <title>Webpack sample</title>
+    <link rel='icon' href='images/favicon.ico' />
     <style>
         body {
             margin: 0;
             overflow: hidden;
         }
+        
+        div#status-window {
+            background-color: #333;
+            color: #fafafa;
+            line-height: 1em;
+            opacity: .85;
+            overflow: hidden;
+            padding: 10px;
+            position: fixed;
+            top: 0px;
+            right: 0px;
+            width: 500px;
+            height: 40px;
+            z-index: 1;
+        }
     </style>
-    <script src='js/bundle.js'></script>
 </head>
 
-<body></body>
+<body>
+    <div id='status-window'>
+        <lable>CalcMagOffset:</lable>
+        <button id='calc-mag-offset' type='button'>Calculate</button>
+    </div>
+    <script src='js/bundle.js'></script>
+</body>
 
 </html>

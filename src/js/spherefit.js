@@ -43,7 +43,7 @@ export function calcMagOffset(magDatas) {
     M.set(x2sum, xysum, zxsum, xsum,
         xysum, y2sum, yzsum, ysum,
         zxsum, yzsum, z2sum, zsum,
-        xsum, ysum, zsum, xs.length);
+        xsum, ysum, zsum, magDatas.length);
 
     let L = new THREE.Matrix4();
     L.set(Esum, 0, 0, 0,
@@ -59,8 +59,9 @@ export function calcMagOffset(magDatas) {
         C = P.elements[2],
         D = P.elements[3];
 
-    const X0 = -1 / 2 * A,
-        Y0 = -1 / 2 * B,
-        Z0 = -1 / 2 * C;
-    const R = Math.sqrt(X0 * X0 + Y0 * Y0 + Z0 * Z0 - D);
+
+    const center = new THREE.Vector3(A, B, C).multiplyScalar(-0.5);
+    const r = Math.sqrt(center.lengthSq() - D);
+
+    return [center, r];
 }
