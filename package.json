@@ -1,6 +1,6 @@
 {
     "name": "3drotation",
-    "version": "1.0.3",
+    "version": "1.0.4",
     "description": "3drotation",
     "main": "index.js",
     "scripts": {

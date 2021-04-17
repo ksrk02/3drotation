@@ -34,32 +34,48 @@ class threeElement {
 }
 
 
-class threeObject {
+class rotateTarget {
 
     constructor() {
 
         this.cube = new THREE.Mesh();
         this.arrow = new THREE.ArrowHelper();
+        this.delatT = 0.01;
     }
 
-    mySet() {
+    mySet(deltaT) {
 
         const geometry = new THREE.BoxGeometry(100, 100, 100);
         const material = new THREE.MeshNormalMaterial();
-
         this.cube = new THREE.Mesh(geometry, material);
         this.cube.position.set(0, 0, 0);
+
+        const dir = new THREE.Vector3(1, 0, 0).normalize();
+        const origin = new THREE.Vector3(0, 0, 0);
+        const length = 200;
+        const hex = 0xffff00;
+        this.arrow = new THREE.ArrowHelper(dir, origin, length, hex);
+
+        this.deltaT = deltaT;
     }
 
-    rotateCube(gyro, deltaT) {
+    rotateCube(gyro) {
 
-        const rotationAxis = gyro.multiplyScalar(deltaT / 360 * 2 * Math.PI);
+        const rotationAxis = gyro.multiplyScalar(this.deltaT / 360 * 2 * Math.PI);
         const rotationAngle = rotationAxis.length();
         rotationAxis.normalize();
 
         const dq = new THREE.Quaternion().setFromAxisAngle(rotationAxis, rotationAngle);
         this.cube.quaternion.multiply(dq);
     }
+
+    rotateArrow(mag, magOffset) {
+
+        mag.add(magOffset.negate()).normalize();
+        console.log(mag);
+
+        this.arrow.setDirection(mag);
+    }
 }
 
-export { threeElement, threeObject };
+export { threeElement, rotateTarget };

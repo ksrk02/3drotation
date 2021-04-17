@@ -4,7 +4,7 @@ const server = require('http').Server(app);
 const io = require('socket.io')(server);
 const SerialPort = require('serialport');
 const port = 3000;
-const portName = 'COM3';
+const portName = 'COM4';
 
 app.use(express.static('public'));
 

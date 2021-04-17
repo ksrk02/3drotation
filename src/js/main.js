@@ -1,7 +1,7 @@
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { io } from 'socket.io-client';
-import { threeElement, threeObject } from './settings';
+import { threeElement, rotateTarget } from './settings';
 import { calcMagOffset } from './spherefit';
 
 
@@ -13,6 +13,9 @@ let magOffset = new THREE.Vector3();
 let magScale = 1.0;
 const deltaT = 0.01;
 const maxLen = 200;
+
+let three = new threeElement();
+let target = new rotateTarget();
 
 
 const socket = io();
@@ -40,17 +43,13 @@ window.addEventListener('load', function() {
 });
 
 
-let three = new threeElement();
-let object = new threeObject();
-
-
 function init() {
 
     three.mySet();
 
-    object.mySet();
+    target.mySet(deltaT);
 
-    three.scene.add(three.camera, three.light, object.cube);
+    three.scene.add(three.camera, three.light, target.cube, target.arrow);
 }
 
 
@@ -58,7 +57,8 @@ function animate() {
 
     if (three.controls) three.controls.update();
 
-    object.rotateCube(gyro, deltaT);
+    target.rotateCube(gyro);
+    target.rotateArrow(mag, magOffset);
 
     three.renderer.render(three.scene, three.camera);
     requestAnimationFrame(animate);
